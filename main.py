@@ -1,58 +1,70 @@
-# this is the main file, which checks to make sure the maze is valid, initiates the tkinter frame
-# and then hands off functionality to the a* algorithm
-
-# note: these should all be import as __
+import tkinter as tk
 from tkinter import *
 from a_star import *
 from node import *
-from validate import *
-#from fire import *
+from search import *
+from fire import *
+from smoke import *
 
-# USER OPTION
-# This changes the speed of the program
-# the larger the number, the larger the delay after every round of the algorithm
 speed = 0
 
 
 def main():
-    with open("maze.txt") as text:
-        # strips the new line characters off the the maze
-        maze = [list(line.strip()) for line in text]
+    with open("plan.txt") as text:
+        # strips the new line characters off the the plan
+        plan = [list(line.strip()) for line in text]
+        
+    # returns col and row lens
+    col_row_len = init_validate(plan)
 
-    # validate.py, returns a list of row/col len
-    col_row_len = init_validate(maze)
-
-    # row/col len list empty, invalid maze
+    # row/col len list empty, invalid plan
     if not col_row_len:
-        print("There was an error with the layout of the maze")
+        print("There was an error with the layout of the plan")
         exit(0)
-
 
     col_len = col_row_len[0]
     row_len = col_row_len[1]
-
-    # creating the maze
+    
     for i in range(0,col_len):
         for j in range(0,row_len):
-            # node.py class
-            maze[i][j] = node(int(maze[i][j]), j, i)
-            #maze[p][q] = node(int(maze[p][q]), p, q)
+            # pos.py class
+            plan[i][j] = pos(int(plan[i][j]), j, i)
+            
 
-    entrance_node = find_entrance(maze, col_len, row_len)
-    exit_node = find_exit(maze, col_len, row_len)
-    fire_node = find_fire(maze, col_len, row_len)
+    
+    entrance_pos = find_entrance(plan, col_len, row_len)
+    exit_pos = find_exit(plan, col_len, row_len)
+    fire_pos = find_fire(plan, col_len, row_len)
 
-    if entrance_node is None or exit_node is None:
+
+    if entrance_pos is None or exit_pos is None:
         print("There is an error with either the entrance or the exit")
         exit(0)
     # initial frame
     root = Tk()
-    canvas = Canvas(root, width=(32*row_len), height=(32*col_len))
+    canvas = Canvas(root, width=(32*row_len), height=(35*col_len))
+    canvas.create_text((row_len*8),(col_len*8),text="Exit cannot be reached",fill="red",font="Helvetica 40 bold")
+    canvas.update()
+    canvas.pack()
+
+    master = Tk()
+    #canvas.create_line(15, 25, 200, 25)
+    #canvas.create_text(500,150,font = "Time 50 italic bold", text="Welcome")   
+    #canvas.pack(fill=BOTH, expand=1)
+    w = Scale(master, from_=0, to=200, orient=HORIZONTAL)
+    w.pack()
+    
     root.title("A-Star Demonstration")
 
-    # hand off to functionality, a_star.py
-    #fire_main(canvas, maze, fire_node, col_len, row_len, root)
-    a_star_main(canvas, maze, entrance_node, exit_node, col_len, row_len, root)
+    #a_star(canvas, plan, entrance_pos, exit_pos, col_len, row_len, root)
+
+    fire_main(canvas, plan, fire_pos, col_len, row_len, root) 
+    #smoke_main(canvas, plan, fire_pos, col_len, row_len, root)
+    #fire_main(canvas, plan, fire_pos, col_len, row_len, root)
+    a_star(canvas, plan, entrance_pos, exit_pos, col_len, row_len, root)
+    #fire_main(canvas, plan, fire_pos, col_len, row_len, root)
+
+
     # frame main loop after functionality
     root.mainloop()
 
