@@ -1,27 +1,9 @@
 from a_star import *
 from main import *
 import sys
+
 # this function is used to get the next round of pos to be explored, and sets their g and f values
 
-
-root=Tk()
-w = Scale(root, from_=0, to=200, orient=HORIZONTAL, command = values)
-
-w.pack()
-
-def values(val):
-    print(val)
-    if val <= 20:
-        val = val * 0
-    
-    if val > 20 and val <= 60: 
-        val = val / 4
-    
-    if val > 61:
-        val = val / 3
-    
-    if val > 120:
-        val = val / 2 
 
 
 
@@ -41,10 +23,11 @@ def add_pos(inherit, plan, col_len, row_len):
     return fire_list
 
 
-def fire_main(canvas, plan, fire_pos, col_len, row_len, root):
+
+def fire_main(canvas, plan, fire_pos, col_len, row_len, val1, root):
     draw_canvas(canvas, plan, col_len, row_len)
-
-
+    
+    print(val1, "fire2")
     fire_pos.g = 6
 
 
@@ -53,13 +36,12 @@ def fire_main(canvas, plan, fire_pos, col_len, row_len, root):
 
 
     found = False
+    print(val1, "fire3")
 
-
-    while len(closed_list) <= val and True: #while len(open_list) <= 10 and True:
+    while len(closed_list) <= int(val1) and True: #while len(open_list) <= 10 and True:
         # sort based on f value
-
         #ran_list = random.shuffle(open_list)
-
+        print(val1, "fire")
         next_pos = open_list.pop(0)
 
 
@@ -82,6 +64,6 @@ def fire_main(canvas, plan, fire_pos, col_len, row_len, root):
         root.update()
         t.sleep(0)
 
-
+    
 
 

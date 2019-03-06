@@ -3,7 +3,11 @@ from tkinter import *
 root=tk.Tk()
 
 #creates white canvas
-c = tk.Canvas(root, height=300, width=600, bg='white')
+c = tk.Canvas(root, height=900, width=1200, bg='white')
+c.pack()
+img = PhotoImage(file='/Users/conorreilly/Desktop/plan2.png')
+root.wm_attributes('-alpha', 0.7) 
+c.create_image(300, 600, image=img)
 c.pack()
 
 

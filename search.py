@@ -24,7 +24,7 @@ def find_exit(plan, column_len, row_len):
 
     for i in range(1, column_len):
         for j in range(0,row_len):
-            if plan[i][j].wall == 7:
+            while plan[i][j].wall == 7:
                 return plan[i][j]
 
     return None
