@@ -4,7 +4,7 @@ from a_star import *
 from node import *
 from search import *
 from fire import *
-from smoke import *
+#from smoke import *
 val = 10
 speed = 0
 
